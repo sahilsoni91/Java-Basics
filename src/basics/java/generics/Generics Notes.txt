@@ -1,0 +1,138 @@
+Purpose of Generics
+-------------------
+- Provide Type Safety
+- Resolve Type Casting problem
+
+Type Safety
+-----------
+- Arrays are type safe because we can guarantee for the type of elements present inside array
+- By mistake if we are trying to add any other type of object in an array we will get compile time error Incompatible Types
+- Arrays are type safe because it is safe to use with respect to type
+
+- Collections are not type safe because we can't guarantee for the type of elements present inside collection
+- By mistake if we are trying to add any other type of object in an ArrayList we will get runtime exception ClassCastException
+- Collections are not safe to use with respect to type
+
+Type Casting
+------------
+- In case of Arrays at time of retrieval, type casting is not required because type of elements are fixed.
+- In case of collections at time of retrieval, type casting is required because type of elements are not fixed and give compile time error Incompatible Types
+
+Generics
+--------
+- To overcome type safety and type casting problem in collection, Generics concept is introduced in version 1.5.
+- Collection to hold only String objects using Generics : ArrayList<String> list = new ArrayList<String>();
+- If we try to add any other type in this collection then we get compile time error
+
+- At time of retrieval, type casting is not required
+
+Difference between ArrayList and ArrayList<String>
+--------------------------------------------------
+ArrayList list = new ArrayList();								|	ArrayList<String> list = new ArrayList<String>();
+---------------------------------------------------------------------------------------------------------------------------
+Non Generic version of ArrayList object							|	Generic version of ArrayList object
+---------------------------------------------------------------------------------------------------------------------------
+We can add any type of object hence, Not Type Safe				|	We can add only String type of objects hence, Type Safe
+---------------------------------------------------------------------------------------------------------------------------
+At the time of retrieval, compulsory Type Casting is required	|	At the time of retrieval, Type Casting is not required
+---------------------------------------------------------------------------------------------------------------------------
+
+ArrayList<String>
+	|		|
+Base Type	Parameter Type
+
+Polymorphism concept applicable only for the base type but not for parameter type
+
+We can provide any class or interface name for Parameter Type but not primitive, if we provide primitive then we get compile time error Unexpected Type.
+
+Generic Classes
+---------------
+- Parameterized classes are called Generic Classes
+- Based on requirement, we can define our own generic classes also
+
+ArrayList Generic class
+-----------------------
+public class ArrayList<T> {
+	boolean add(T t);
+	T get(int index);
+}
+
+- At runtime, T will be replaced with provided parameter type.
+- When we add any object of other type in String specific ArrayList we will get compile time error cannot find symbol.
+- At the time of retrieval, type casting is not required.
+
+Bounded Types
+-------------
+We can bound the type parameter for a particular range by only using extends keyword, such types are called Bounded Types.
+
+Syntax for Bounded Types
+------------------------
+class Test<T extends X>{}
+- X can be either class or interface
+- If X is a class then as type parameter we can pass either X type or its child classes
+- If X is an interface then as type parameter we can pass either X type or its implementation classes
+
+Bounded Types in Combination
+----------------------------
+We can define bounded types even in combination also.
+class Test<T extends Number & Runnable>{}
+Here parameter type we can take anything which should be child class of Number and should implements Runnable interface.
+
+class Test<T extends Runnable & Number>{}
+Above class is invalid because first we need to provide class then interfaces
+
+class Test<T extends Thread & Number>{}
+Above class is invalid because we can't extend more than one class
+
+Conclusions
+-----------
+- We can define bounded types only by using extends keyword and we can't use implements and super keywords. But we can replace implements keyword with extends keyword
+- As a type parameter T we can take any valid Java identifier. But it is convention to use T
+- Based on requirement,  we can declare any number of type parameters and all these type parameters should be separated with ,
+
+Generic Methods and Wild Card Character(?)
+------------------------------------------
+Case 1:
+show(ArrayList<String> list);
+- We can call this method by passing ArrayList of only String type
+- Within the method we can add only String type of objects to the list
+
+Case 2:
+show(ArrayList<?> list);
+- We can call this method by passing ArrayList of only any type
+- Within the method we can't add anything to the list except null because we don't know the type exactly
+- null is allowed because it is valid value for any type
+- These type of methods are best suitable for read only operation
+
+Case 3:
+show(ArrayList<? extends X> list);
+- X can be either class or interface
+- If X is a class then we can call this method by passing ArrayList of either X type or its child classes
+- If X is an interface then we can call this method by passing ArrayList of either X type or its implemented classes
+- Within the method we can't add anything to the list except null because we don't know the type exactly
+- These type of methods are best suitable for read only operation
+
+Case 4:
+show(ArrayList<? super X> list);
+- X can be either class or interface
+- If X is a class then we can call this method by passing ArrayList of either X type or its super classes
+- If X is an interface then we can call this method by passing ArrayList of either X type or its super class of implemented class
+- Within the method we can add X type of object and null to the list
+
+We can declare Parameter type either at class level or at method level.
+
+Declare Parameter Type at class Level
+-------------------------------------
+class Test<T>{}
+
+Declare Parameter Type at method Level
+--------------------------------------
+<T> <return_type> method_name(T t)
+
+Communication with Non-Generic Code
+-----------------------------------
+- If we send generic object to non-generic area then it starts behaving like non-generic object
+- If we send non-generic object to generic area then it starts behaving like generic object
+
+Generic concept applicable at compile time but not at runtime.
+At the time of compilation as last step generic syntax will be removed and hence for JVM generic syntax will not be available.
